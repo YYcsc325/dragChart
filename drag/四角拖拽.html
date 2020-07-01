@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+#div1 {width:500px; height:300px; background:#CCC; position:absolute; left:200px; top:100px;}
+#div1 .rb {width:20px; height:20px; background:red; position:absolute; right:0; bottom:0; z-index:2;}
+#div1 .lt {width:20px; height:20px; background:red; position:absolute; left:0; top:0; z-index:2;}
+#div1 .r {width:20px; height:100%; background:yellow; position:absolute; right:0; top:0; z-index:1;}
+#div1 .b {width:100%; height:20px; background:yellow; position:absolute; right:0; bottom:0; z-index:1;}
+#div1 .rt {width:20px; height:20px; background:red; position:absolute; right:0; top:0; z-index:2;}
+#div1 .lb {width:20px; height:20px; background:red; position:absolute; left:0; bottom:0; z-index:2;}
+#div1 .l {width:20px; height:100%; background:yellow; position:absolute; left:0; top:0; z-index:1;}
+</style>
+
+</head>
+
+<body>
+<div id="div1">
+	<span class="rb" id='rb'></span>
+	<span class="lt" id='lt'></span>
+    <span class="r"></span>
+    <span class="b"></span>
+	<span class="rt" id='rt'></span>
+	<span class="lb"></span>
+    <span class="l"></span>
+</div>
+<script>
+
+	lt.onmousedown = function(e){
+		var ev = e || event;
+		var l = ev.clientX - this.offsetLeft;
+		var t = ev.clientY - this.offsetTop;
+		var oldL = this.offsetLeft;
+		var oldH = this.offsetTop;
+		var oldDivW = div1.offsetWidth;
+		var oldDivL = div1.offsetLeft;
+		var oldDivH = div1.offsetHeight;
+		var oldDivT = div1.offsetTop;
+		document.onmousemove = function(e){
+			var ev = e || event;
+			var needW = ev.clientX - l;
+			var needH = ev.clientY - t;
+			var nowL = needW - oldL;
+			var nowT = needH - oldH;
+			//console.log(nowL);
+			//if(needW<50)needW = 50;
+			//if(needH<50)needH = 50;
+			lt.style.left = 0 + 'px';
+			lt.style.top = 0 + 'px';
+			div1.style.width = oldDivW - nowL + 'px';
+			div1.style.left = oldDivL + nowL +'px';
+			div1.style.height = oldDivH - nowT + 'px';
+			div1.style.top = oldDivT + nowT +'px';
+			
+
+		
+
+		};
+
+		document.onmouseup   = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+		return false;
+	}
+
+
+	rb.onmousedown = function(e){
+		var ev = e || event;
+		var l = ev.clientX - this.offsetLeft;
+		var t = ev.clientY - this.offsetTop;
+		document.onmousemove = function(e){
+			var ev = e || event;
+			var needW = ev.clientX - l;
+			var needH = ev.clientY - t;
+			if(needW<50)needW = 50;
+			if(needH<50)needH = 50;
+			rb.style.left = needW + 'px';
+			rb.style.top = needH + 'px';
+			div1.style.width =needW+rb.offsetWidth+'px';
+			div1.style.height =needH+rb.offsetHeight+'px';
+
+			rt.style.left = div1.offsetWidth - rt.offsetWidth+'px';
+
+		};
+
+		document.onmouseup   = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+		return false;
+	}
+
+
+	rt.onmousedown = function(e){
+		var ev = e || event;
+		var l = ev.clientX - this.offsetLeft;
+		var t = ev.clientY - this.offsetTop;
+		var lastT = this.offsetTop;
+		var oldDivT = div1.offsetTop;
+		var oldDivH = div1.offsetHeight;
+		document.onmousemove = function(e){
+			var ev = e || event;
+			var needW = ev.clientX - l;
+			var needH = ev.clientY - t;
+			var newT = needH-lastT;
+			//console.log();
+
+			//console.log(needH-lastT);
+			if(needW<50)needW = 50;
+
+			rt.style.left = needW + 'px';
+			rt.style.top = 0 + 'px';
+
+
+			div1.style.width =needW+rt.offsetWidth+'px';
+			div1.style.top = oldDivT + newT + 'px';
+			div1.style.height = oldDivH - newT + 'px';
+
+
+			rb.style.left = div1.offsetWidth - rb.offsetWidth+'px';
+			rb.style.top = div1.offsetHeight - rb.offsetHeight+'px';
+		//	div1.style.height =needH+rt.offsetHeight+'px';
+
+		};
+
+		document.onmouseup   = function(){
+			document.onmousemove = document.onmouseup = null;
+		};
+		return false;
+	}
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

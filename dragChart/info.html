@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <style>
+    body,div,p,img{
+         margin: 0;
+         padding: 0;
+         background:#aaa;
+    }
+     img{
+        width:250px;
+        height:100px;
+        border:3px solid #345;
+        border-radius:5px;
+     }
+     ul{
+        list-style:none;
+        float:left;
+     }
+     li{
+        margin:5px;
+     }
+     #dropLocation div{
+        width:400px;
+        height:300px;
+        float:left;
+        border:2px solid lightblue;
+     }
+     #dropLocation{
+        width:700px;
+        height:610px;
+        border:3px solid #345;
+        border-radius:5px;
+        float:left;
+        margin-top:20px;
+        margin-left:30px;
+        overflow:auto;
+     }
+
+    </style>
+    <script src="js/echarts.js"></script>
+</head>
+<body>
+    <ul>
+        <li><img src="img/1.png" alt="" class="asd" data="line1-charts"></li>
+        <li><img src="img/2.png" alt="" class="asd" data="line2-charts"></li>
+        <li><img src="img/3.png" alt="" class="asd" data="line3-charts"></li>
+        <li><img src="img/4.png" alt="" class="asd" data="line4-charts"></li>
+    </ul>
+    <ul>
+       <li><img src="img/pic5.png" class="imgo"></li>
+       <li><img src="img/pic6.png" class="imgo"></li>
+       <li><img src="img/pic7.png" class="imgo"></li>
+       <li><img src="img/pic8.png" class="imgo"></li>
+    </ul>   
+    <div id="dropLocation">       
+    </div>
+    <script src="js/dragCharts.js"></script>
+</body>
+</html>
