@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <style>
+    /*引入头部网页样式*/
+    ::-webkit-scrollbar {
+        width: 5px;
+    }/* 滚动条整体宽度 */
+    ::-webkit-scrollbar-track{
+        background-color: #DAE4E5;
+    }/* 滚动条的滑轨背景颜色 */
+    ::-webkit-scrollbar-thumb{
+        background-color: #5e5e5e;
+        border-radius: 2px;
+    }/* 滚动条的滑块背景颜色 */
+    body,div,p,img{
+         margin: 0;
+         padding: 0;
+         background:#eee;
+    }
+     img{
+        width:150px;
+        height:100px;
+        border:2px solid #345;
+        border-radius:5px;
+     }
+     ul{
+        list-style:none;
+        float:left;
+     }
+     li{
+        margin:5px;
+        float:left;
+     }
+     li:hover{
+        cursor: all-scroll;
+        opacity: .8;
+     }
+     #main>div{
+        width: 700px;
+        height:200px;
+        float:left;
+        position:absolute;
+     }
+     #main .downClass{
+        border:2px dashed #aaa;
+        z-index:100;
+        opacity: .7;
+     }
+     #main{
+        width:1200px;
+        height:500px;
+        border:2px solid #345;
+        border-radius:5px;
+        float:left;
+        margin-top:20px;
+        margin-left:30px;
+        overflow:auto;
+        /* 加上这个就限制在外层父元素内 */
+        /* position:relative; */
+     }
+    </style>
+</head>
+<body>
+    <script src="echarts.js"></script>
+    <ul>
+        <li><img src="img/1.png" alt="" class="asd" data="line1-charts"></li>
+        <li><img src="img/2.png" alt="" class="asd" data="line2-charts"></li>
+        <li><img src="img/3.png" alt="" class="asd" data="line3-charts"></li>
+        <li><img src="img/4.png" alt="" class="asd" data="line4-charts"></li>
+    </ul> 
+    <div id="main">       
+    </div>
+    <script src="drag.js"></script>
+</body>
+</html>

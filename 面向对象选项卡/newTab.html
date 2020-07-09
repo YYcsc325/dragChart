@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#tabNode{
+		float: left;
+	}
+	#tabNode div{
+		float: left;
+		width: 600px;height: 200px;
+		background: #ccc;
+		border: 1px solid black;
+		display: none;
+	}
+	#tabNode span,#tabNode input{
+		background: #ccc;
+	}
+
+	#tabNode .active{
+		background: red;
+	}
+	</style>
+</head>
+<body>
+	<script>
+        function NewTab(obj){
+        	//存一下数据，变为私有属性
+            this.obj = obj;
+            //是否创建元素
+            this.obj.isCreate?this.Create():this.unCreate();
+            //触发事件
+            this.EventChange();
+        }
+        NewTab.prototype = {
+        	//创建元素
+        	"Create":function(){
+        	   //第一步创建最外层的DIV加上对应的ID
+               var data = document.createElement(this.obj.CreateNode.outerNode.split('/')[1].toLowerCase());
+                   data.id = this.obj.CreateNode.outerNode.split('/')[0];
+                	document.body.appendChild(data);
+                	//调用创建input元素的标签
+                	this.CreateNodeInput(data);
+                	//调用创建div元素的标签
+                	this.CreateNodeDiv(data);
+        	},
+        	//不创建元素
+        	"unCreate":function(){
+
+        	},
+        	//创建元素标签的input
+        	"CreateNodeInput":function(data){
+               //创建插入大DIV下的元素,创建length的个数的inpt
+               for(var i = 0;i<this.obj.CreateNode.length;i++){
+                  //创建元素标签的input
+                  var objb = document.createElement(this.obj.CreateNode.topNodeCos.split("/")[0].toLowerCase());
+                  //添加传入对应的样式,在input内部
+                  for(key in this.obj.CreateNode.topNodeStyle){
+                  	  objb.style[key] = this.obj.CreateNode.topNodeStyle[key];
+                  }
+                  var objbb = this.obj.CreateNode.topNodeCos.split("/")[0].toLowerCase();
+                  //循环添加对应的value值,如果是button
+                  if(objbb == 'input'){
+                     objb.value = this.obj.CreateNode.topNodeVal[i];
+                     objb.type = 'button';
+                  }else if(objbb == 'span'){
+                  	objb.innerHTML = this.obj.CreateNode.topNodeVal[i];
+                  }
+
+                  data.appendChild(objb);
+               }
+        	},
+        	//创建元素标签的div
+        	"CreateNodeDiv":function(data){
+               //创建大DIV下面的div标签
+               for(var j = 0;j<this.obj.CreateNode.length;j++){     	                 	  
+                  //创建div
+                  var objt = document.createElement(this.obj.CreateNode.topNodeCos.split('/')[1].toLowerCase());
+                  //循环加入div内的内容
+                  objt.innerHTML = this.obj.CreateNode.bottomNodeVal[j];
+                  //让第一个显示
+                  if(j==0){
+                  	objt.style.display = "block";
+                  }
+                  data.appendChild(objt);
+               }
+        	},
+        	'EventChange':function(){
+        		//当进行创建的时候
+        		if(this.obj.isCreate){
+        			var ODiv = document.getElementById(this.obj.CreateNode.outerNode.split('/')[0]);
+        			var oDiv = ODiv.getElementsByTagName(this.obj.CreateNode.topNodeCos.split('/')[1]) 
+        			var oInput = ODiv.getElementsByTagName(this.obj.CreateNode.topNodeCos.split('/')[0]);
+        			//先存一下class
+        			var classTab = this.obj.classTab[0];
+        			for(let i = 0;i<oInput.length;i++){
+                        oInput[i].onclick = function(){
+                        	for(var j = 0;j<oDiv.length;j++){
+                                oDiv[j].style.display = "none";
+                                oInput[j].className = "";
+                        	}
+                        	this.className = classTab;
+                        	oDiv[i].style.display = "block";
+                        }
+        			}
+        		}
+        	}
+
+        }
+        new NewTab({
+        	isCreate:true,
+    		CreateNode:{
+				outerNode:'tabNode/DIV',
+				length:8,
+				topNodeCos:'INPUT/DIV',
+				topNodeStyle:{'width':'50px','height':'20px','float':'left','textAlign':'center','cursor': 'pointer'},
+				topNodeVal:['王越超','彭艳','张瑞希','王旭','韩其良','张瑞','李博','hahah'],
+				bottomNodeVal:['啊数据库大了','阿里河山大好的手机卡好看','阿里河阿斯顿哪','阿里河萨达萨达','ssad 距离看到卡就离开','阿里河山大好的手机卡好看213','阿里河山大好的手机卡好看jasdkhkjh','0i009009']
+			},
+			classTab:['active']
+        })
+
+	</script>
+</body>
+</html>

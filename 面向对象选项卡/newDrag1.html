@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>面向对象的拖拽封装</title>
+	<style>
+	body{
+		margin: 0;
+		padding: 0;
+	}
+    #odiv,#odiv1,#odiv2,#odiv3,#odiv4{
+    	width: 200px;
+    	height: 200px;
+    	background:#000;
+    	position:absolute;
+    	cursor: pointer;
+    }
+	</style>
+</head>
+<body>
+    <div id="odiv"></div>
+    <div id="odiv1"></div>
+    <div id="odiv2"></div>
+    <div id="odiv3"></div>
+    <div id="odiv4"></div>
+	<script>
+
+    function Drag(obj){
+       //存一下这里的this是指向drag，下面拖动的this都是需要这个this
+       this.obj = obj;
+       this.obj.onmousedown = (e=event)=>{
+       	    //点击计算出鼠标的点击的位置，距离当前盒子左边的距离,及上边的距离
+       	    this.l = e.clientX - this.obj.offsetLeft; 
+       	    this.t = e.clientY - this.obj.offsetTop;
+       	    //移动的时候
+            document.onmousemove = (e=event)=>{
+            	//盒子左边距离clienx就是文本框左边的距离-l就是鼠标距离当前盒子左边距离 = 盒子左边距离文本框距离
+                this.obj.style.left = e.clientX - this.l + "px";
+                this.obj.style.top = e.clientY - this.t + "px";
+            };
+            document.onmouseup = ()=>{
+                document.onmousedown = null;
+                document.onmousemove = null;
+            }
+       }     
+    }
+    new Drag(odiv)
+    new Drag(odiv1)
+    new Drag(odiv2)
+    new Drag(odiv3)
+    new Drag(odiv4)
+	</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>面向对象的拖拽封装</title>
+  <style>
+*{margin:0;padding:0;}
+#zhezhao{
+        width:100%;
+        height:100%;
+        background:#f00;
+        filter:alpha(opacity:0);
+        opacity:0;
+        z-index:9999;
+        position:absolute;
+        top:0;
+        left:0;
+        display:none;
+}
+#out{
+        width:200px;
+        height:200px;
+        position:relative;
+        background:#EEEEEE;
+        border:1px solid #f00;
+}
+#innerRB{
+        width:15px;
+        height:15px;
+        background:#99CC00;
+        position:absolute;
+        right:0px;
+        bottom:0px;
+        cursor:nw-resize;
+        overflow:hidden;
+        font-size:12px;
+        text-align:center;
+        line-height:15px;
+        color:#FFFFFF;
+        float:right;
+        z-index:3;
+}
+#innerRight{
+        width:15px;
+        height:100%;
+        background:#f00;
+        float:right;
+        position:absolute;
+        right:0;
+        top:0;
+        cursor:e-resize;
+        overflow:hidden;
+        filter:alpha(opacity:0);
+        opacity:0;
+        z-index:1;
+}
+#innerBottom{
+        width:100%;
+        height:15px;
+        background:#f00;
+        position:absolute;
+        left:0;
+        bottom:0;
+        cursor:n-resize;
+        overflow:hidden;
+        filter:alpha(opacity:0);
+        opacity:0;
+        z-index:1;
+}
+#out p{
+        padding:10px;
+        line-height:24px;
+        font-size:13px;
+        text-indent:24px;
+        color:#996600;
+}
+#out h2{
+        width:100%;
+        height:25px;
+        line-height:25px;
+        font-size:14px;
+        background:#CC9900;
+        color:#FFFFFF;
+        text-indent:15px;
+        cursor:move;
+        overflow:hidden;
+}
+  </style>
+</head>
+<body>
+  <div id="zhezhao"></div>
+  <script>
+
+    function Drag(obj){
+       //存一下这里的this是指向drag，下面拖动的this都是需要这个this
+       this.obj = obj;
+       //是否创建元素
+       this.obj.isCreate?this.Create():this.unCreate();
+       //点击拖拽开始
+       this.DragMouseDown(); 
+    }
+    Drag.prototype = {
+       //拖拽移动
+      'DragMouseMove':function(){
+          //移动的时候
+          document.onmousemove = (e=event)=>{
+            //盒子左边距离clienx就是文本框左边的距离-l就是鼠标距离当前盒子左边距离 = 盒子左边距离文本框距离
+              this.needDrag.style.left = e.clientX - this.l + "px";
+              this.needDrag.style.top = e.clientY - this.t + "px";
+          };
+      },
+       //拖拽结束
+      'DragMouseUp':function(){
+          document.onmouseup = ()=>{
+                  document.onmousedown = null;
+                  document.onmousemove = null;
+          }
+      },
+      //拖拽开始
+      'DragMouseDown':function(e){
+          //点击计算出鼠标的点击的位置，距离当前盒子左边的距离,及上边的距离
+          if(this.obj.isCreate){
+             this.needDrag = document.getElementsByTagName(this.obj.innerElement.oneElement)[0];
+             console.log(this.needDrag);
+             this.needDrag.onmousedown = (e=event)=>{
+                  this.l = e.clientX - this.needDrag.offsetLeft; 
+                  this.t = e.clientY - this.needDrag.offsetTop;
+                  this.DragMouseMove();
+                  this.DragMouseUp();
+             }
+          }          
+      },
+      //创建元素
+      'Create':function(){
+           var data = this.obj.innerElement;
+           var farg,innerP,innerH2,outDiv,outDiv2,innerRight,innerRB,innerBottom;
+               farg = document.createDocumentFragment();
+               outDiv2 = document.createElement(this.obj.outElement.split('/')[0]);
+               outDiv2.style.width = '100%';
+               outDiv2.style.height = '100%';
+               outDiv2.style.overflow = 'hidden';
+               innerH2 = document.createElement(data.oneElement); 
+               outDiv2.appendChild(innerH2);
+               innerP = document.createElement(data.twoElement);
+               outDiv2.appendChild(innerP);
+
+               innerRight = document.createElement(data.threeElement.split('/')[0])
+               innerRight.id = data.threeElement.split('/')[1];
+               outDiv2.appendChild(innerRight);
+
+               innerRB = document.createElement(data.fourElement.split('/')[0]);
+               innerRB.id = data.fourElement.split('/')[1];
+               outDiv2.appendChild(innerRB);
+
+               innerBottom = document.createElement(data.fiveElement.split('/')[0]);
+               innerBottom.id = data.fiveElement.split('/')[1];
+               outDiv2.appendChild(innerBottom);
+
+               outDiv = document.createElement(this.obj.outElement.split('/')[0]);
+               outDiv.id = this.obj.outElement.split('/')[1];
+
+               outDiv.appendChild(outDiv2);
+               farg.appendChild(outDiv);
+               document.body.appendChild(farg);
+      },
+      //不创建元素
+      'unCreate':function(){
+        alert("不创建元素")
+      }
+    }
+    new Drag({
+        isCreate:true,
+        outElement:'div/out',
+        innerElement:{
+          oneElement:'h2',
+          twoElement:'p',
+          threeElement:'div/innerRight',
+          fourElement:'div/innerRB',
+          fiveElement:'div/innerBottom'
+        }
+    })
+  </script>
+</body>
+</html>

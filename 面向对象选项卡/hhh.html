@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+     function show(){
+     	this.name = '123';
+     }
+     show.prototype.fn = function(){
+     	alert("hahahahaha");
+     }
+     function showTwo(){
+        console.log('showTwo');
+     }
+     showTwo.prototype = new show();
+     showTwo.prototype.fc = function(){
+     	alert('我是showTwo的原型上的方法');
+     }
+     var a = new show();
+     var b = new showTwo();
+     console.log(a);
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>面向对象的拖拽封装</title>
+	<style>
+	body{
+		margin: 0;
+		padding: 0;
+	}
+    #odiv,#odiv1,#odiv2,#odiv3,#odiv4{
+    	width: 200px;
+    	height: 200px;
+    	background:#000;
+    	position:absolute;
+    	cursor: pointer;
+    }
+	</style>
+</head>
+<body>
+    <div id="odiv"></div>
+	<script>
+
+    function Drag(obj,area){
+       //存一下这里的this是指向drag，下面拖动的this都是需要这个this
+       this.obj = obj;
+       //改进不拖出边框
+       this.left = area.left;
+       this.top = area.top;
+       this.right = area.right;
+       this.bottom = area.bottom;
+       //点击拖拽开始
+       this.obj.onmousedown = (e=event) => {
+          this.DragMouseDown(e);
+          this.DragMouseMove();
+          this.DragMouseUp();
+       } 
+    }
+    Drag.prototype = {
+       //拖拽移动
+      'DragMouseMove':function(){
+          //移动的时候
+          document.onmousemove = (e=event)=>{
+            //盒子左边距离clienx就是文本框左边的距离-l就是鼠标距离当前盒子左边距离 = 盒子左边距离文本框距离
+              //不拖出边界算的应该是计算后的值,判断距离文档左边是不是小于0的边距
+              this.needLeft = e.clientX - this.l;
+              this.needTop = e.clientY - this.t; 
+              //右边的算法，浏览器的最大宽度-自身的宽度
+              this.maxLeft = innerWidth - this.obj.offsetWidth;
+              //下边的算法
+              this.maxBottom = innerHeight - this.obj.offsetHeight;
+              !this.left && (this.needLeft = this.needLeft < 0?0:this.needLeft)
+              !this.top && (this.needTop = this.needTop < 0?0:this.needTop)
+              !this.right && (this.needLeft = this.needLeft > this.maxLeft?this.maxLeft:this.needLeft)
+              !this.bottom && (this.needTop = this.needTop > this.maxBottom?this.maxBottom:this.needTop)
+              this.obj.style.left = this.needLeft + "px";
+              this.obj.style.top = this.needTop + "px";
+          };
+      },
+       //拖拽结束
+      'DragMouseUp':function(){
+          document.onmouseup = ()=>{
+                  document.onmousedown = null;
+                  document.onmousemove = null;
+          }
+      },
+      //拖拽开始
+      'DragMouseDown':function(e){
+          //点击计算出鼠标的点击的位置，距离当前盒子左边的距离,及上边的距离
+          this.l = e.clientX - this.obj.offsetLeft; 
+          this.t = e.clientY - this.obj.offsetTop;      
+      }
+    }
+    new Drag(odiv,{
+      left:false,
+      top:false,
+      right:false,
+      bottom:false
+    })
+	</script>
+</body>
+</html>
